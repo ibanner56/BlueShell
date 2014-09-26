@@ -10,6 +10,8 @@
 #       ...    aws_secret_access_key='<aws secret key>')
 #
 # Once you've got that done, modify availability_zone, key_dir, and keys to the values you need.
+# Also, make sure the permissions on your key files are all 600. Otherwise this wont work and it's
+#   not our fault. No excuses.
 #
 
 import subprocess
@@ -41,7 +43,11 @@ def main():
             if(instance.state == "running"):
                 key = instance.key_name
                 ip = instance.private_ip_address
-                print(ip + " - " + key)
+                try:
+                    print(ip + " - " + key)
+                    break
+                except:
+                    print("Unable to print ip/key pair - Likely issue is a non-unicode key name")
                 if(key in keys):
                     ssh_comm = "ssh -i " + key_dir + key + ".pem " + sshopts + " ubuntu@" + ip 
                     try:
@@ -64,8 +70,9 @@ def main():
                             print("\tNot vulnerable")
                         break
                     except:
-                        print("\tUnable to ssh - connection attempt timed out")
+                        print("\tUnable to ssh - error unknown, please see python/console logs for more info")
                 else:
                     print("\tUnable to ssh - need key " + key + ".pem")
 
 main()
+

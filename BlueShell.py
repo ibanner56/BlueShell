@@ -45,7 +45,6 @@ def main():
                 ip = instance.private_ip_address
                 try:
                     print(ip + " - " + key)
-                    break
                 except:
                     print("Unable to print ip/key pair - Likely issue is a non-unicode key name")
                 if(key in keys):
@@ -63,7 +62,6 @@ def main():
                                     print("\tBlue Shell successfully deployed")
                                 else:
                                     print("\tUpdate unsuccessful")
-                                break
                             except:
                                 print("\tUnable to update")
                         else:
@@ -72,7 +70,10 @@ def main():
                     except:
                         print("\tUnable to ssh - error unknown, please see python/console logs for more info")
                 else:
-                    print("\tUnable to ssh - need key " + key + ".pem")
+                    try:
+                        print("\tUnable to ssh - need key " + key + ".pem")
+                    except:
+                        print("\tUnable to ssh - need key. Also, we can't read your non-unicode keys. Stop.")
 
 main()
 

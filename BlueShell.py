@@ -64,7 +64,7 @@ def main():
                             print("\tNot vulnerable")
                         break
                     except:
-                        print("\tUnable to ssh - error unknown")
+                        print("\tUnable to ssh - connection attempt timed out")
                 else:
                     print("\tUnable to ssh - need key " + key + ".pem")
 

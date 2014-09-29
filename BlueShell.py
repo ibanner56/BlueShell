@@ -24,7 +24,7 @@ availability_zone = "us-east-1"
 key_dir = "/Users/isaacbanner/.ssh/"
 
 # Keys you're looking to use
-keys = ['at', 'at-chef']
+keys = ['at', 'at-chef', 'eddie_enernoc_ec2', 'mvp-mesos']
 
 
 # Utility strings
@@ -50,7 +50,13 @@ def main():
                     print(ip + " - " + key)
                 except:
                     print("Unable to print ip/key pair - Likely issue is a non-unicode key name")
-                if(key in keys):
+                if(key in keys or key == None):
+                    # Children, do NOT try this at home. I'm a professional. I swear.
+                    if(key == None):
+                        # This is to deal with the fact that a large portion of our autoscale groups
+                        # Use at-chef, but don't have it listed in AWS...
+                        print("Attempting to use " + ip + " - at-chef")
+                        key = "at-chef"
                     ssh_comm = "ssh -i " + key_dir + key + ".pem " + sshopts + " ubuntu@" + ip 
                     try:
                         v_check = ssh_comm + " '" + check + "'"
@@ -67,7 +73,7 @@ def main():
                                     red_shells.append(ip + " - insecure")
                                     print("\tUpdate unsuccessful")
                             except:
-                                red_shells.append(ip + " - insecure")
+                                red_shells.append(ip + " - insecure post update")
                                 print("\tUnable to update")
                         else:
                             print("\tNot vulnerable")
@@ -76,11 +82,12 @@ def main():
                         red_shells.append(ip + " - unreachable")
                         print("\tUnable to ssh - error unknown, please see python/console logs for more info")
                 else:
-                    red_shells.append(ip + " - unreachable")
                     try:
                         print("\tUnable to ssh - need key " + key + ".pem")
+                        red_shells.append(ip + " - don't have key " + key)
                     except:
                         print("\tUnable to ssh - need key. Also, we can't read your non-unicode keys. Stop.")
+                        red_shells.append(ip + " - can't read key name")
 
     print("Unresolved Instances: ")
     for shell in red_shells:

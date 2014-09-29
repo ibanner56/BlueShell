@@ -81,7 +81,7 @@ def main():
                                 if("vulnerable" not in v_response):
                                     print("\tBlue Shell successfully deployed")
                                 else:
-                                    poison_mushrooms.append(ip + " - insecure post update")
+                                    poison_mushrooms.append(ip + " - insecure post-update")
                                     print("\tUpdate unsuccessful")
                             except:
                                 poison_mushrooms.append(ip + " - unable to confirm update")

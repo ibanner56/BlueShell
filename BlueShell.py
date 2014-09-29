@@ -37,6 +37,12 @@ def main():
     # Maintain a list of all instances potentially still insecure at the end of the run.
     red_shells = []
     
+    # Maintain a list of all instances we couldn't access due to key issues (e.g. not having the key)
+    bananas = []
+    
+    # Maintain a list of all instances that didn't pass the check after running the update
+    poison_mushrooms = []       # It was in Super Mario Kart. It's canon.
+    
     # Connect to EC2 and get all your instances
     ec2 = boto.ec2.connect_to_region(availability_zone)
     reservations = ec2.get_all_reservations()
@@ -70,10 +76,10 @@ def main():
                                 if("vulnerable" not in v_response):
                                     print("\tBlue Shell successfully deployed")
                                 else:
-                                    red_shells.append(ip + " - insecure")
+                                    poison_mushrooms.append(ip + " - insecure post update")
                                     print("\tUpdate unsuccessful")
                             except:
-                                red_shells.append(ip + " - insecure post update")
+                                poison_mushrooms.append(ip + " - insecure")
                                 print("\tUnable to update")
                         else:
                             print("\tNot vulnerable")
@@ -84,12 +90,19 @@ def main():
                 else:
                     try:
                         print("\tUnable to ssh - need key " + key + ".pem")
-                        red_shells.append(ip + " - don't have key " + key)
+                        bananas.append(ip + " - don't have key " + key)
                     except:
                         print("\tUnable to ssh - need key. Also, we can't read your non-unicode keys. Stop.")
-                        red_shells.append(ip + " - can't read key name")
+                        bananas.append(ip + " - can't read key name")
 
-    print("Unresolved Instances: ")
+    # Print out the data on any instances we didn't confirm as secure.
+    print("Missing Keys: ")
+    for banana in bananas:
+        print(banana)
+    print("\nStill Insecure Instances: ")
+    for mushroom in poison_mushrooms:
+        print(mushroom)
+    print("\nUnreachable Instances: ")
     for shell in red_shells:
         print(shell)
 

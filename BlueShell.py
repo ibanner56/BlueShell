@@ -13,6 +13,9 @@
 # Also, make sure the permissions on your key files are all 600. Otherwise this wont work and it's
 #   not our fault. No excuses.
 #
+# Also, don't do anything stupid with this script. If you break something, it's also not our fault -
+#   you're just dumb.
+#
 
 import subprocess
 import boto.ec2

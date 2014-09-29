@@ -101,7 +101,7 @@ def main():
                         bananas.append(ip + " - key name unavailable")
 
     # Print out the data on any instances we didn't confirm as secure.
-    print("Missing Keys: ")
+    print("\nMissing Keys: ")
     for banana in bananas:
         print(banana)
     print("\nStill Insecure Instances: ")

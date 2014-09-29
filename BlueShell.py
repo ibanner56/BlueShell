@@ -84,7 +84,7 @@ def main():
                                     poison_mushrooms.append(ip + " - insecure post update")
                                     print("\tUpdate unsuccessful")
                             except:
-                                poison_mushrooms.append(ip + " - insecure")
+                                poison_mushrooms.append(ip + " - unable to confirm update")
                                 print("\tUnable to update")
                         else:
                             print("\tNot vulnerable")

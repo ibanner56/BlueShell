@@ -28,6 +28,8 @@ key_dir = "/Users/isaacbanner/.ssh/"
 
 # Keys you're looking to use
 keys = ['at', 'at-chef', 'eddie_enernoc_ec2', 'mvp-mesos']
+# For use if the instance's key is unavailable
+default_key = "at-chef"
 
 
 # Utility strings
@@ -58,14 +60,14 @@ def main():
                 try:
                     print(ip + " - " + key)
                 except:
-                    print("Unable to print ip/key pair - Likely issue is a non-unicode key name")
+                    print("Unable to print ip/key pair - Likely cause is aws isn't providing a key name")
                 if(key in keys or key == None):
                     # Children, do NOT try this at home. I'm a professional. I swear.
                     if(key == None):
                         # This is to deal with the fact that a large portion of our autoscale groups
                         # Use at-chef, but don't have it listed in AWS...
-                        print("Attempting to use " + ip + " - at-chef")
-                        key = "at-chef"
+                        print("Attempting to use " + ip + " - " + default_key)
+                        key = default_key
                     ssh_comm = "ssh -i " + key_dir + key + ".pem " + sshopts + " ubuntu@" + ip 
                     try:
                         v_check = ssh_comm + " '" + check + "'"
@@ -95,8 +97,8 @@ def main():
                         print("\tUnable to ssh - need key " + key + ".pem")
                         bananas.append(ip + " - don't have key " + key)
                     except:
-                        print("\tUnable to ssh - need key. Also, we can't read your non-unicode keys. Stop.")
-                        bananas.append(ip + " - can't read key name")
+                        print("\tUnable to ssh - Ccn't get key name.")
+                        bananas.append(ip + " - key name unavailable")
 
     # Print out the data on any instances we didn't confirm as secure.
     print("Missing Keys: ")

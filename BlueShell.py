@@ -34,7 +34,7 @@ cmd = "sudo apt-get update; sudo apt-get --only-upgrade install bash"
 
 # Checks if an update is necessary, then fires the Blue Shell
 def main():
-    # Maintain a list of all instances potentially still insecure at the end of the run.
+    # Maintain a list of all instances that were unreachable do to unknown reasons.
     red_shells = []
     
     # Maintain a list of all instances we couldn't access due to key issues (e.g. not having the key)

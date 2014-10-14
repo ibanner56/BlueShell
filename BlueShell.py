@@ -24,12 +24,12 @@ import boto.ec2
 availability_zone = "us-east-1"
 
 # Where you keep your keys
-key_dir = "/Users/isaacbanner/.ssh/"
+key_dir = ""
 
 # Keys you're looking to use
-keys = ['at', 'at-chef', 'eddie_enernoc_ec2', 'mvp-mesos']
+keys = []
 # For use if the instance's key is unavailable
-default_key = "at-chef"
+default_key = ""
 
 
 # Utility strings
